@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:offlinedatabaseee/MyDatabaseClass.dart';
+import 'package:offlinedatabaseee/ViewuserData.dart';
+import 'package:sqflite/sqflite.dart';
+
+class SignUppage extends StatefulWidget {
+  static Database? db;
+
+  @override
+  State<SignUppage> createState() => _SignUppageState();
+}
+
+class _SignUppageState extends State<SignUppage> {
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController number = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  bool nameerror = false;
+  String nameerrorstring = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    MyDatabseclass().GettingDatabase().then((value) {
+      setState(() {
+        SignUppage.db = value;
+      });
+
+      print("=S==${SignUppage.db}");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(20),
+            child: TextField(
+              controller: name,
+              onChanged: (value) {
+                print("$value");
+              },
+              decoration: InputDecoration(
+                  errorText: nameerror ? nameerrorstring : null,
+                  hintText: "Enter Your Name",
+                  labelText: "NAME",
+                  border: OutlineInputBorder()),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(20),
+            child: TextField(
+              controller: email,
+              decoration: InputDecoration(
+                  prefix: Icon(Icons.email),
+                  hintText: "Enter Your Email",
+                  labelText: "EMAIL",
+                  border: OutlineInputBorder()),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(20),
+            child: TextField(
+              controller: number,
+              decoration: InputDecoration(
+                  prefix: Icon(Icons.email),
+                  hintText: "Enter Your Email",
+                  labelText: "EMAIL",
+                  border: OutlineInputBorder()),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(20),
+            child: TextField(
+              controller: password,
+              decoration: InputDecoration(
+                  prefix: Icon(Icons.email),
+                  hintText: "Enter Your Email",
+                  labelText: "EMAIL",
+                  border: OutlineInputBorder()),
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                RegExp nameRegExp = RegExp('[a-zA-Z]');
+
+                nameerror = false;
+                if (name.text.isEmpty) {
+                  nameerrorstring = "plese fill name";
+                  nameerror = true;
+                } else if (!nameRegExp.hasMatch(name.text)) {
+                  nameerrorstring = "Valid NAme";
+                  nameerror = true;
+                } else {
+                  MyDatabseclass()
+                      .InsertUserdata(name.text, email.text, number.text,
+                          password.text, SignUppage.db!)
+                      .then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("User SuccessFully Register")));
+
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                      builder: (context) {
+                        return ViewuserData();
+                      },
+                    ));
+                  });
+                }
+
+                setState(() {});
+              },
+              child: Text("Sign Up"))
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    );
+  }
+}
