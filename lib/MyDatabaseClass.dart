@@ -29,9 +29,11 @@ class MyDatabseclass {
     print("==Inserted==$aa");
   }
 
-  Future<void> VierUserdtatttt(Database database) async {
+  Future<List<Map>> VierUserdtatttt(Database database) async {
     String ss = "Select * From USERDATA";
     List<Map> ll = await database.rawQuery(ss);
-    print("USERDAYAYYYY======${ll}")
+    print("USERDAYAYYYY======${ll}");
+
+    return ll;
   }
 }

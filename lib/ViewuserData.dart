@@ -11,7 +11,7 @@ class ViewuserData extends StatefulWidget {
 }
 
 class _ViewuserDataState extends State<ViewuserData> {
-
+  List<Map>? userdddd;
 
   @override
   void initState() {
@@ -21,22 +21,28 @@ class _ViewuserDataState extends State<ViewuserData> {
     ForUserdata();
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: ListView.builder(
+        itemCount: userdddd!.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Text("${userdddd![index]['ID']}"),
+            subtitle: Text("${userdddd![index]['EMAIL']}"),
+            title: Text("${userdddd![index]['NAME']}"),
+          );
+        },
+      ),
+    );
   }
 
   void ForUserdata() {
-
-    MyDatabseclass().VierUserdtatttt(SignUppage.db!);
-
-
-
+    MyDatabseclass().VierUserdtatttt(SignUppage.db!).then((value) {
+      print("===${value}");
+      setState(() {
+        userdddd = value;
+      });
+    });
   }
-
-
 }
