@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:offlinedatabaseee/MyDatabaseClass.dart';
-import 'package:offlinedatabaseee/ViewuserData.dart';
-import 'package:sqflite/sqflite.dart';
 
-class SignUppage extends StatefulWidget {
-  static Database? db;
+import 'SignUppage.dart';
+import 'ViewuserData.dart';
+
+class UpdatePage extends StatefulWidget {
+  Map userdddd;
+
+  UpdatePage(this.userdddd);
 
   @override
-  State<SignUppage> createState() => _SignUppageState();
+  State<UpdatePage> createState() => _UpdatePageState();
 }
 
-class _SignUppageState extends State<SignUppage> {
+class _UpdatePageState extends State<UpdatePage> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController number = TextEditingController();
-  TextEditingController password = TextEditingController();
 
   bool nameerror = false;
   String nameerrorstring = "";
@@ -23,13 +25,10 @@ class _SignUppageState extends State<SignUppage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    MyDatabseclass().GettingDatabase().then((value) {
-      setState(() {
-        SignUppage.db = value;
-      });
 
-      print("=S==${SignUppage.db}");
-    });
+    name.text = widget.userdddd['NAME'];
+    email.text = widget.userdddd['EMAIL'];
+    number.text = widget.userdddd['NUMBER'];
   }
 
   @override
@@ -68,18 +67,7 @@ class _SignUppageState extends State<SignUppage> {
               controller: number,
               decoration: InputDecoration(
                   prefix: Icon(Icons.email),
-                  hintText: "Enter Your Email",
-                  labelText: "EMAIL",
-                  border: OutlineInputBorder()),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(20),
-            child: TextField(
-              controller: password,
-              decoration: InputDecoration(
-                  prefix: Icon(Icons.email),
-                  hintText: "Enter Your Email",
+                  hintText: "Enter Your number",
                   labelText: "EMAIL",
                   border: OutlineInputBorder()),
             ),
@@ -96,24 +84,20 @@ class _SignUppageState extends State<SignUppage> {
                   nameerrorstring = "Valid NAme";
                   nameerror = true;
                 } else {
-                  MyDatabseclass()
-                      .InsertUserdata(name.text, email.text, number.text,
-                          password.text, SignUppage.db!)
-                      .then((value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("User SuccessFully Register")));
+                  MyDatabseclass().updatetdata(
+                      name.text, email.text, number.text, SignUppage.db!,widget.userdddd['ID']).then((value) {
 
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return ViewuserData();
-                      },
-                    ));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                          return ViewuserData();
+                        },));
+
+
                   });
                 }
 
                 setState(() {});
               },
-              child: Text("Sign Up"))
+              child: Text("Update Data"))
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),

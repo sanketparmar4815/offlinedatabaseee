@@ -9,10 +9,10 @@ class MyDatabseclass {
 // open the database
     Database database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
-          // When creating the db, create the table
-          await db.execute(
-              'create table USERDATA (ID integer Primary Key Autoincrement,NAME text, EMAIL text , NUMBER text ,PASSWORD text)');
-        });
+      // When creating the db, create the table
+      await db.execute(
+          'create table USERDATA (ID integer Primary Key Autoincrement,NAME text, EMAIL text , NUMBER text ,PASSWORD text)');
+    });
     print("=====${path.toString()}");
     print("===DATABSE==${database}");
 
@@ -35,5 +35,20 @@ class MyDatabseclass {
     print("USERDAYAYYYY======${ll}");
 
     return ll;
+  }
+
+  Future<void> deleteData(int userid, Database database) async {
+    String delete = "Delete From USERDATA where ID = '$userid'";
+
+    int dd = await database.rawDelete(delete);
+  }
+
+  Future<void> updatetdata(String uname, String uemail, String unumber,
+      Database database, int userdddd) async {
+    String uu =
+        "Update USERDATA set NAME = '$uname', EMAIL = '$uemail' ,NUMBER = '$unumber' where ID =  '$userdddd'";
+
+ int uuu = await   database.rawUpdate(uu);
+
   }
 }

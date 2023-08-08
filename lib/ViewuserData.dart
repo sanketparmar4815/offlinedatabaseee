@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:offlinedatabaseee/SignUppage.dart';
+import 'package:offlinedatabaseee/UpdatePage.dart';
 
 import 'MyDatabaseClass.dart';
 
@@ -28,6 +29,37 @@ class _ViewuserDataState extends State<ViewuserData> {
         itemCount: userdddd!.length,
         itemBuilder: (context, index) {
           return ListTile(
+            trailing: PopupMenuButton(
+              onSelected: (value) {
+                if (value == 1) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+
+                          return UpdatePage(userdddd![index]);
+                        },
+                      ));
+                }
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(value: 1, child: Text("update")),
+                  PopupMenuItem(
+                      value: 2,
+                      onTap: () {
+                        int userid = userdddd![index]['ID'];
+
+                        MyDatabseclass()
+                            .deleteData(userid, SignUppage.db!)
+                            .then((value) {
+                          ForUserdata();
+                        });
+                      },
+                      child: Text("Delete"))
+                ];
+              },
+            ),
             leading: Text("${userdddd![index]['ID']}"),
             subtitle: Text("${userdddd![index]['EMAIL']}"),
             title: Text("${userdddd![index]['NAME']}"),
