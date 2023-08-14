@@ -3,6 +3,7 @@ import 'package:offlinedatabaseee/SignUppage.dart';
 import 'package:offlinedatabaseee/UpdatePage.dart';
 
 import 'MyDatabaseClass.dart';
+import 'SigninPage.dart';
 
 class ViewuserData extends StatefulWidget {
   const ViewuserData({Key? key}) : super(key: key);
@@ -12,34 +13,87 @@ class ViewuserData extends StatefulWidget {
 }
 
 class _ViewuserDataState extends State<ViewuserData> {
-  List<Map>? userdddd;
+  List<Map> userdddd = [];
+  List<Map> searchlist = [];
+
+  bool IsSearch = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     ForUserdata();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: IsSearch
+          ? AppBar(
+              backgroundColor: Colors.yellow,
+              title: TextField(
+                onChanged: (value) {
+                  print("===$value");
+
+                  if (value.isNotEmpty) {
+                    searchlist = [];
+                    for (int i = 0; i < userdddd.length; i++) {
+                      String name = userdddd[i]['NAME'];
+                      print("==$name");
+
+                      if (name.toUpperCase().contains(value.toUpperCase())) {
+                        print("SEARCH NAME==$name");
+
+                        searchlist.add(userdddd[i]);
+                      }
+                    }
+                  } else {
+                    searchlist = userdddd;
+                  }
+
+                  setState(() {});
+                },
+                decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            IsSearch = false;
+                            searchlist = userdddd;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.black,
+                        )),
+                    border: OutlineInputBorder()),
+              ),
+            )
+          : AppBar(
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        IsSearch = true;
+                      });
+                    },
+                    icon: Icon(Icons.search))
+              ],
+              title: Text("Contact Book"),
+            ),
       body: ListView.builder(
-        itemCount: userdddd!.length,
+        itemCount: IsSearch ? searchlist.length : userdddd.length,
         itemBuilder: (context, index) {
+          Map map = IsSearch ? searchlist[index] : userdddd[index];
+
           return ListTile(
             trailing: PopupMenuButton(
               onSelected: (value) {
                 if (value == 1) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-
-                          return UpdatePage(userdddd![index]);
-                        },
-                      ));
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) {
+                      return UpdatePage(userdddd![index]);
+                    },
+                  ));
                 }
               },
               itemBuilder: (context) {
@@ -48,10 +102,10 @@ class _ViewuserDataState extends State<ViewuserData> {
                   PopupMenuItem(
                       value: 2,
                       onTap: () {
-                        int userid = userdddd![index]['ID'];
+                        int userid = map['ID'];
 
                         MyDatabseclass()
-                            .deleteData(userid, SignUppage.db!)
+                            .deleteData(userid, SigninPage.db!)
                             .then((value) {
                           ForUserdata();
                         });
@@ -60,9 +114,9 @@ class _ViewuserDataState extends State<ViewuserData> {
                 ];
               },
             ),
-            leading: Text("${userdddd![index]['ID']}"),
-            subtitle: Text("${userdddd![index]['EMAIL']}"),
-            title: Text("${userdddd![index]['NAME']}"),
+            leading: Text("${map['ID']}"),
+            subtitle: Text("${map['EMAIL']}"),
+            title: Text("${map['NAME']}"),
           );
         },
       ),
@@ -70,10 +124,11 @@ class _ViewuserDataState extends State<ViewuserData> {
   }
 
   void ForUserdata() {
-    MyDatabseclass().VierUserdtatttt(SignUppage.db!).then((value) {
+    MyDatabseclass().VierUserdtatttt(SigninPage.db!).then((value) {
       print("===${value}");
       setState(() {
         userdddd = value;
+        searchlist = value;
       });
     });
   }

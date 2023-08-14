@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'SignUppage.dart';
+import 'package:offlinedatabaseee/SigninPage.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: SignUppage(),
+    home: SigninPage(),
   ));
 }

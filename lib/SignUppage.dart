@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:offlinedatabaseee/MyDatabaseClass.dart';
-import 'package:offlinedatabaseee/ViewuserData.dart';
+import 'package:offlinedatabaseee/SigninPage.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SignUppage extends StatefulWidget {
-  static Database? db;
+
 
   @override
   State<SignUppage> createState() => _SignUppageState();
@@ -23,13 +23,7 @@ class _SignUppageState extends State<SignUppage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    MyDatabseclass().GettingDatabase().then((value) {
-      setState(() {
-        SignUppage.db = value;
-      });
 
-      print("=S==${SignUppage.db}");
-    });
   }
 
   @override
@@ -98,14 +92,14 @@ class _SignUppageState extends State<SignUppage> {
                 } else {
                   MyDatabseclass()
                       .InsertUserdata(name.text, email.text, number.text,
-                          password.text, SignUppage.db!)
+                          password.text, SigninPage.db!)
                       .then((value) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("User SuccessFully Register")));
 
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return ViewuserData();
+                        return SigninPage();
                       },
                     ));
                   });

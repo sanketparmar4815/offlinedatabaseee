@@ -48,7 +48,14 @@ class MyDatabseclass {
     String uu =
         "Update USERDATA set NAME = '$uname', EMAIL = '$uemail' ,NUMBER = '$unumber' where ID =  '$userdddd'";
 
- int uuu = await   database.rawUpdate(uu);
+    int uuu = await database.rawUpdate(uu);
+  }
 
+  Future<List<Map>> loginuser(String email, String pass, Database database) async {
+    String loginnn =
+        "select * from USERDATA where EMAIL = '$email' and  PASSWORD = '$pass'";
+    List<Map> ll = await database.rawQuery(loginnn);
+    print("=====$ll");
+    return ll;
   }
 }
