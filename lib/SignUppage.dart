@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:offlinedatabaseee/MyDatabaseClass.dart';
 import 'package:offlinedatabaseee/SigninPage.dart';
-import 'package:sqflite/sqflite.dart';
 
 class SignUppage extends StatefulWidget {
-
-
   @override
   State<SignUppage> createState() => _SignUppageState();
 }
@@ -23,7 +20,6 @@ class _SignUppageState extends State<SignUppage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
 
   @override
@@ -94,14 +90,19 @@ class _SignUppageState extends State<SignUppage> {
                       .InsertUserdata(name.text, email.text, number.text,
                           password.text, SigninPage.db!)
                       .then((value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("User SuccessFully Register")));
+                    if (value) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("User SuccessFully Register")));
 
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return SigninPage();
-                      },
-                    ));
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return SigninPage();
+                        },
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("User Already Exist!")));
+                    }
                   });
                 }
 

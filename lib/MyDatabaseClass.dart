@@ -19,14 +19,30 @@ class MyDatabseclass {
     return database;
   }
 
-  Future<void> InsertUserdata(String namee, String email, String numberrrr,
+  Future<bool> InsertUserdata(String namee, String email, String numberrrr,
       String pass, Database dbbb) async {
-    String insertdat =
-        "insert into USERDATA (NAME,EMAIL,NUMBER,PASSWORD)  values('$namee','$email','$numberrrr','$pass"
-        "')";
+    String usercheck = "select * from  USERDATA where EMAIL ='$email'";
 
-    int aa = await dbbb.rawInsert(insertdat);
-    print("==Inserted==$aa");
+    List<Map> usercheklist = await dbbb.rawQuery(usercheck);
+
+    print("==U==${usercheklist}");
+
+    if(usercheklist.length==0)
+      {
+        String insertdat =
+            "insert into USERDATA (NAME,EMAIL,NUMBER,PASSWORD)  values('$namee','$email','$numberrrr','$pass"
+            "')";
+
+        int aa = await dbbb.rawInsert(insertdat);
+        print("==Inserted==$aa");
+        return true;
+      }
+    else {
+
+      return false;
+    }
+
+
   }
 
   Future<List<Map>> VierUserdtatttt(Database database) async {
@@ -39,7 +55,6 @@ class MyDatabseclass {
 
   Future<void> deleteData(int userid, Database database) async {
     String delete = "Delete From USERDATA where ID = '$userid'";
-
     int dd = await database.rawDelete(delete);
   }
 
