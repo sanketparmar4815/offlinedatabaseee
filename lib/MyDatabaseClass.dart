@@ -12,6 +12,8 @@ class MyDatabseclass {
       // When creating the db, create the table
       await db.execute(
           'create table USERDATA (ID integer Primary Key Autoincrement,NAME text, EMAIL text , NUMBER text ,PASSWORD text)');
+      await db.execute(
+          'create table ContactBook (ID integer Primary Key Autoincrement,NAME text, NUMBER text,USERID integer)');
     });
     print("=====${path.toString()}");
     print("===DATABSE==${database}");
@@ -27,22 +29,17 @@ class MyDatabseclass {
 
     print("==U==${usercheklist}");
 
-    if(usercheklist.length==0)
-      {
-        String insertdat =
-            "insert into USERDATA (NAME,EMAIL,NUMBER,PASSWORD)  values('$namee','$email','$numberrrr','$pass"
-            "')";
+    if (usercheklist.length == 0) {
+      String insertdat =
+          "insert into USERDATA (NAME,EMAIL,NUMBER,PASSWORD)  values('$namee','$email','$numberrrr','$pass"
+          "')";
 
-        int aa = await dbbb.rawInsert(insertdat);
-        print("==Inserted==$aa");
-        return true;
-      }
-    else {
-
+      int aa = await dbbb.rawInsert(insertdat);
+      print("==Inserted==$aa");
+      return true;
+    } else {
       return false;
     }
-
-
   }
 
   Future<List<Map>> VierUserdtatttt(Database database) async {
@@ -73,5 +70,23 @@ class MyDatabseclass {
     List<Map> ll = await database.rawQuery(loginnn);
     print("=====$ll");
     return ll;
+  }
+
+  Future<void> insertConatct(
+      String name, String num, int userid, Database database) async {
+    String insertconatc =
+        "insert into ContactBook (NAME,NUMBER,USERID)  values('$name','$num','$userid')";
+
+    int aa = await database.rawInsert(insertconatc);
+
+    print("==$aa");
+  }
+
+  Future<List<Map>> viewConatct(int i, Database database) async {
+
+    String selctconatc = "select * from ContactBook where USERID ='$i'";
+
+  List<Map>  list  = await  database.rawQuery(selctconatc);
+    return list;
   }
 }

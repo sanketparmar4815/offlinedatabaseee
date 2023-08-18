@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:offlinedatabaseee/Homepage.dart';
 import 'package:offlinedatabaseee/MyDatabaseClass.dart';
 import 'package:offlinedatabaseee/SignUppage.dart';
-import 'package:sqflite/sqflite.dart';
+
+import 'SplashScreen.dart';
 
 class SigninPage extends StatefulWidget {
-  static Database? db;
-
   const SigninPage({Key? key}) : super(key: key);
 
   @override
@@ -15,19 +15,6 @@ class SigninPage extends StatefulWidget {
 class _SigninPageState extends State<SigninPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    MyDatabseclass().GettingDatabase().then((value) {
-      setState(() {
-        SigninPage.db = value;
-      });
-
-      print("=S==${SigninPage.db}");
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +41,24 @@ class _SigninPageState extends State<SigninPage> {
           ElevatedButton(
               onPressed: () {
                 MyDatabseclass()
-                    .loginuser(email.text, password.text, SigninPage.db!)
+                    .loginuser(email.text, password.text, SplashScreen.db!)
                     .then((value) {
                   if (value.length == 1) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Login Successfully")));
+
+                    SplashScreen.sp!.setBool("loginstatus", true);
+
+                    SplashScreen.sp!.setInt("ID", value[0]['ID']);
+                    SplashScreen.sp!
+                        .setString("EMAIL", value[0]['EMAIL'])
+                        .then((value) {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Homepage();
+                        },
+                      ));
+                    });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("User Not Found")));

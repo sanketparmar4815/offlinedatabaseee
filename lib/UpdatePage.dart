@@ -3,6 +3,7 @@ import 'package:offlinedatabaseee/MyDatabaseClass.dart';
 
 import 'SignUppage.dart';
 import 'SigninPage.dart';
+import 'SplashScreen.dart';
 import 'ViewuserData.dart';
 
 class UpdatePage extends StatefulWidget {
@@ -86,7 +87,7 @@ class _UpdatePageState extends State<UpdatePage> {
                   nameerror = true;
                 } else {
                   MyDatabseclass().updatetdata(
-                      name.text, email.text, number.text, SigninPage.db!,widget.userdddd['ID']).then((value) {
+                      name.text, email.text, number.text, SplashScreen.db!,widget.userdddd['ID']).then((value) {
 
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                           return ViewuserData();

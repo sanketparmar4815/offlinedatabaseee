@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:offlinedatabaseee/MyDatabaseClass.dart';
 import 'package:offlinedatabaseee/SigninPage.dart';
 
+import 'SplashScreen.dart';
+
 class SignUppage extends StatefulWidget {
   @override
   State<SignUppage> createState() => _SignUppageState();
@@ -88,7 +90,7 @@ class _SignUppageState extends State<SignUppage> {
                 } else {
                   MyDatabseclass()
                       .InsertUserdata(name.text, email.text, number.text,
-                          password.text, SigninPage.db!)
+                          password.text, SplashScreen.db!)
                       .then((value) {
                     if (value) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

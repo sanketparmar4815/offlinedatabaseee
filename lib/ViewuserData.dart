@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:offlinedatabaseee/SignUppage.dart';
 import 'package:offlinedatabaseee/UpdatePage.dart';
 
 import 'MyDatabaseClass.dart';
-import 'SigninPage.dart';
+import 'SplashScreen.dart';
 
 class ViewuserData extends StatefulWidget {
   const ViewuserData({Key? key}) : super(key: key);
@@ -105,7 +104,7 @@ class _ViewuserDataState extends State<ViewuserData> {
                         int userid = map['ID'];
 
                         MyDatabseclass()
-                            .deleteData(userid, SigninPage.db!)
+                            .deleteData(userid, SplashScreen.db!)
                             .then((value) {
                           ForUserdata();
                         });
@@ -124,7 +123,7 @@ class _ViewuserDataState extends State<ViewuserData> {
   }
 
   void ForUserdata() {
-    MyDatabseclass().VierUserdtatttt(SigninPage.db!).then((value) {
+    MyDatabseclass().VierUserdtatttt(SplashScreen.db!).then((value) {
       print("===${value}");
       setState(() {
         userdddd = value;
